@@ -30,7 +30,7 @@ nav {
     background: #000;
     height: calc(100% - 70px); /* 100% - height of header */
     max-width:100%;
-    width:400px;
+    width:450px;
 
     /* Transform and transition setting */
     transition: 0.2s;
@@ -68,4 +68,11 @@ nav {
     color: #fff;
     margin: 6px;
     font-size: 25pt;
+}
+
+@media (max-width: 500px) {
+    .main-heading {
+        font-size: 12pt;
+        margin-top: 17px;
+    }
 }
