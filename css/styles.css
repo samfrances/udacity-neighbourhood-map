@@ -1,10 +1,13 @@
+* {
+    box-sizing: border-box;
+}
+
 html,
 body {
     font-family: Arial, sans-serif;
     height: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 .flex-col { /* See http://stackoverflow.com/a/15377178 */
@@ -14,8 +17,9 @@ body {
 }
 
 header {
-    height: 50px;
+    height: 70px;
     background-color: #000;
+    padding-top:10px;
 }
 
 #map {
@@ -23,10 +27,18 @@ header {
 }
 
 .menu-btn {
-    display:inline-block;
+    display: inline-block;
     margin: 7px;
     background-image: url(../img/menu.png);
     background-repeat: no-repeat;
     width: 32px;
     height: 32px;
+    vertical-align: top;
+}
+
+.main-heading {
+    display: inline-block;
+    color: #fff;
+    margin: 6px;
+    font-size: 25pt;
 }
