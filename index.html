@@ -12,7 +12,12 @@
         <h1 class="main-heading">Barcelona Tourist Attractions</h1>
       </header>
       <nav>
-        hello
+        <!-- Credit: See README, Third-party code [5] -->
+        <input type="text" class="searchbox" data-bind="value: filter, valueUpdate: 'afterkeydown'">
+        <!-- End credit -->
+        <ul data-bind="foreach: filteredLocations()">
+          <li data-bind="text: title"></li>
+        </ul>
       </nav>
       <div id="map"></div>
     </div>

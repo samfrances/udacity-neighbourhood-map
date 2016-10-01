@@ -1,44 +1,37 @@
-[
-  {
-    "title": "La Sagrada Familia",
-    "location": {
-      "lat": 41.403622,
-      "lng": 2.174378
-    }
-  },
-  {
-    "title": "Casa Batlló",
-    "location": {
-      "lat": 41.391649,
-      "lng": 2.164889
-    }
-  },
-  {
-    "title": "La Rambla",
-    "location": {
-      "lat": 41.380662,
-      "lng": 2.173862,
-    }
-  },
-  {
-    "title": "Casa Milà",
-    "location": {
-      "lat": 41.395372,
-      "lng": 2.161983
-    }
-  },
-  {
-    "title": "Park Güell",
-    "location": {
-      "lat": 41.413654,
-      "lng": 2.152770
-    }
-  },
-  {
-    "title": "Ciutadella Park",
-    "location": {
-      "lat": 41.389309,
-      "lng": 2.186544
-    }
+[{
+  "title": "La Sagrada Familia",
+  "location": {
+    "lat": 41.403622,
+    "lng": 2.174378
   }
-]
+}, {
+  "title": "Casa Batlló",
+  "location": {
+    "lat": 41.391649,
+    "lng": 2.164889
+  }
+}, {
+  "title": "La Rambla",
+  "location": {
+    "lat": 41.380662,
+    "lng": 2.173862
+  }
+}, {
+  "title": "Casa Milà",
+  "location": {
+    "lat": 41.395372,
+    "lng": 2.161983
+  }
+}, {
+  "title": "Park Güell",
+  "location": {
+    "lat": 41.413654,
+    "lng": 2.152770
+  }
+}, {
+  "title": "Ciutadella Park",
+  "location": {
+    "lat": 41.389309,
+    "lng": 2.186544
+  }
+}]

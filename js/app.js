@@ -1,4 +1,35 @@
-// Retrieve JSON list of locations from server
+/**
+ * Model class representing locations
+ */
+var Location = (function() {
+
+    /**
+     * @constructor
+     * @param {Object} - Object literal with data relating to the location.
+     *      {
+     *           title: {string},
+     *           id: {Number},
+     *           location: {
+     *              lat: {Number},
+     *              lng: {Number}
+     *           }
+     *      }
+     *
+     */
+    function Location(data) {
+        this.title = data.title;
+        this.id = data.id;
+        this.location = data.location;
+        this.marker =  new google.maps.Marker({
+            position: data.location,
+            title: data.title,
+            animation: google.maps.Animation.DROP,
+            id: data.id,
+        });
+    }
+
+    return Location;
+})();
 
 /**
  * ViewModel 'class' reprenting list of locations
@@ -10,30 +41,31 @@ var LocationsVM = (function() {
      */
     function LocationsVM() {
         var self = this;
-        $.getJSON("data/data.json", function(data) {
-            self.locations = processLocationsData(data);
-        })
+
+        this.locations = ko.observableArray();
+        this.filter = ko.observable("");
+        // Credit (with modifications): See README, Third-party code [5]
+        this.filteredLocations = ko.computed(function() {
+            var filter = $.trim( self.filter().toLowerCase() );
+            if (!filter) {
+                return self.locations();
+            } else {
+                return ko.utils.arrayFilter(self.locations(), function(location) {
+                    return (location.title.toLowerCase().indexOf(filter) !== -1);
+                });
+            }
+        });
+        // End credit
+
+        this.loadData();
     }
-
-    // Private helper functions
-
-    /**
-     * Processes the list of JSON objects returned by the AJAX request
-     * in the LocationsVM constructor, and returns a list of google.maps.Marker
-     * objects, as yet with no attachment to any map.
-     *
-     * @param {Array} locationsData - an array of objects detailing locations
-     * @return {Array.<google.maps.Marker>}
-     */
-    function processLocationsData(locationsData) {
-        return locationsData.map(function(location, i) {
-            var marker =  new google.maps.Marker({
-                position: location.location,
-                title: location.title,
-                animation: google.maps.Animation.DROP,
-                id: i,
+    LocationsVM.prototype.loadData = function() {
+        var self = this;
+        $.getJSON("data/data.json", function(data) {
+            data.forEach(function(location, i) {
+                location.id = i;
+                self.locations.push( new Location(location) );
             });
-            return marker;
         })
     }
 
@@ -55,4 +87,5 @@ function initMap() {
 
     // KO Experimentation REMOVE_COMMENT
     vm = new LocationsVM();
+    ko.applyBindings(vm);
 }
