@@ -9,6 +9,8 @@ My submission for the Neighbourhood Map project of the Udacity Front-End Web Dev
     + [http://stackoverflow.com/a/15377178](http://stackoverflow.com/a/15377178)
 - This Stackoverflow answer helped with link icon styling for the hamburger icon:
     + http://stackoverflow.com/questions/11013283/change-image-on-link-button-with-css
+- The following Udacity github repository provided some guidance on creating the slide-out menu:
+    + [https://github.com/udacity/frontend-nanodegree-feedreader](https://github.com/udacity/frontend-nanodegree-feedreader)
 
 ## Other third-party resources
 

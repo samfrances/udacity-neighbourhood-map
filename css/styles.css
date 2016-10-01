@@ -22,6 +22,30 @@ header {
     padding-top:10px;
 }
 
+nav {
+    /* Set nav to cover other elements */
+    position: absolute;
+    top: 70px; /* height of header */
+    z-index: 50;
+    background: #000;
+    height: calc(100% - 70px); /* 100% - height of header */
+    max-width:100%;
+    width:400px;
+
+    /* Transform and transition setting */
+    transform: translateX(0);
+    transition: transform 0.2s;
+
+    /* Inner properties */
+    padding:20px;
+    color:white;
+}
+
+.menu-hidden nav {
+    transform: translateX(-400px);
+    transition: transform 0.2s;
+}
+
 #map {
     flex-grow: 1;
 }
