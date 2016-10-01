@@ -4,6 +4,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .flex-col { /* See http://stackoverflow.com/a/15377178 */
@@ -19,4 +20,13 @@ header {
 
 #map {
     flex-grow: 1;
+}
+
+.menu-btn {
+    display:inline-block;
+    margin: 7px;
+    background-image: url(../img/menu.png);
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
 }
