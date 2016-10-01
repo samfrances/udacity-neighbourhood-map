@@ -3,5 +3,5 @@ My submission for the Neighbourhood Map project of the Udacity Front-End Web Dev
 
 ## Third-party code
 
-- Used this page from the Udacity Google Maps APIs course as my starting point:
+- Used this page from the Udacity Google Maps APIs course as starting point for project:
     + [https://github.com/udacity/ud864/blob/master/Project_Code_1_TheJavaScriptAPIOverview.html](https://github.com/udacity/ud864/blob/master/Project_Code_1_TheJavaScriptAPIOverview.html)
