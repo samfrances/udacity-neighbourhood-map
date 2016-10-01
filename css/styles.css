@@ -43,9 +43,9 @@ nav {
 
 /* Set on body, transforms meny off-screen */
 .menu-hidden nav {
-    /*transform: translateX(-400px);
+    transform: translateX(-400px);
     /*transition: transform 0.2s;*/
-    transition: 0.2s;
+    transition: 0.4s;
     width:0px;
     padding:0px;
 }

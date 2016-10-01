@@ -4,5 +4,6 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 41.390205, lng: 2.154007},
         zoom: 13,
+        mapTypeControl: false, // Remove controls from top left corner of map
     });
 }
