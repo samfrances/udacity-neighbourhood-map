@@ -33,8 +33,7 @@ nav {
     width:400px;
 
     /* Transform and transition setting */
-    transform: translateX(0);
-    transition: transform 0.2s;
+    transition: 0.2s;
 
     /* Inner properties */
     padding:20px;
@@ -43,8 +42,11 @@ nav {
 
 /* Set on body, transforms meny off-screen */
 .menu-hidden nav {
-    transform: translateX(-400px);
-    transition: transform 0.2s;
+    /*transform: translateX(-400px);
+    /*transition: transform 0.2s;*/
+    transition: 0.2s;
+    width:0px;
+    padding:0px;
 }
 
 #map {
