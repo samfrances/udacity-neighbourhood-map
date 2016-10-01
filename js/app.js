@@ -44,6 +44,7 @@ var LocationsVM = (function() {
 
         this.locations = ko.observableArray();
         this.filter = ko.observable("");
+
         // Credit (with modifications): See README, Third-party code [5]
         this.filteredLocations = ko.computed(function() {
             var filter = $.trim( self.filter().toLowerCase() );
@@ -68,6 +69,9 @@ var LocationsVM = (function() {
             });
         })
     }
+    LocationsVM.prototype.clickLocation = function(location) {
+        console.log(location.id + " " + location.title);
+    }
 
     return LocationsVM;
 
@@ -75,7 +79,6 @@ var LocationsVM = (function() {
 
 
 var vm;
-
 var map;
 function initMap() {
 // Constructor creates a new map - only center and zoom are required.
