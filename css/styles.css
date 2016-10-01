@@ -6,6 +6,17 @@ body {
     padding: 0;
 }
 
+.flex-col { /* See http://stackoverflow.com/a/15377178 */
+    display: flex;
+    flex-direction: column;
+    height:100%;
+}
+
+header {
+    height: 50px;
+    background-color: #000;
+}
+
 #map {
-    height: 100%;
+    flex-grow: 1;
 }
