@@ -19,7 +19,8 @@ body {
 header {
     height: 70px;
     background-color: #000;
-    padding-top:10px;
+    padding-top: 10px;
+    padding-left: 11px;
 }
 
 nav {
