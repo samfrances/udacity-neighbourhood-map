@@ -134,26 +134,15 @@ var MapView = (function() {
     return MapView;
 })();
 
-var vm; // TODO: move declaraton into initMap once no longer needed for debugging
-var mv;
+// Kick off app
+var viewmodel = new LocationsVM();
+ko.applyBindings(viewmodel);
+var mapview = new MapView(viewmodel);
+
 function initMap() {
-// Constructor creates a new map - only center and zoom are required.
-    // map = new google.maps.Map(document.getElementById('map'), {
-    //     center: {lat: 41.390205, lng: 2.154007},
-    //     zoom: 14,
-    //     mapTypeControl: false, // Remove controls from top left corner of map
-    // });
-
-    // bounds = new google.maps.LatLngBounds(); // Export bounds to global scope
-
-    // KO Experimentation REMOVE_COMMENT
-    vm = new LocationsVM();
-    ko.applyBindings(vm);
-
-    mv = new MapView(vm);
-    mv.initMap();
-    vm.loadData(function(data){
-        mv.initMarkers(data);
+    mapview.initMap();
+    viewmodel.loadData(function(data){
+        mapview.initMarkers(data);
     });
 }
 
