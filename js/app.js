@@ -94,7 +94,7 @@ var LocationsVM = (function() {
 })();
 
 
-var vm;
+var vm; // TODO: move declaraton into initMap once no longer needed for debugging
 var map;
 function initMap() {
 // Constructor creates a new map - only center and zoom are required.
