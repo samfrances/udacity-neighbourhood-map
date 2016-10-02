@@ -63,11 +63,13 @@ var LocationsVM = (function() {
                 location.id = i;
                 self.locations.push( new Location(location) );
             });
+            // Load corresponding wikipedia data
+            self._loadLocationsInfo()
             // callback called with data once data retrieved and processed
             cb(data);
         });
     }
-    LocationsVM.prototype.loadLocationsInfo = function() {
+    LocationsVM.prototype._loadLocationsInfo = function() {
         var self = this;
 
         var pageids = this.locations().map(function(location) {
@@ -248,6 +250,5 @@ function initMap() {
     mapview.initMap();
     viewmodel.loadLocations(function(data){
         mapview.initMarkers(data);
-        viewmodel.loadLocationsInfo()
     });
 }
