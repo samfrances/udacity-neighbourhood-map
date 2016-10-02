@@ -1,5 +1,6 @@
 [{
   "title": "La Sagrada Familia",
+  "search": "La Sagrada Familia",
   "location": {
     "lat": 41.403622,
     "lng": 2.174378
@@ -7,6 +8,7 @@
   "wiki_id": 59545
 }, {
   "title": "Casa Batlló",
+  "search": "Casa Batllo",
   "location": {
     "lat": 41.391649,
     "lng": 2.164889
@@ -14,6 +16,7 @@
   "wiki_id": 1322
 }, {
   "title": "La Rambla",
+  "search": "La Rambla",
   "location": {
     "lat": 41.380662,
     "lng": 2.173862
@@ -21,6 +24,7 @@
   "wiki_id": 923085
 }, {
   "title": "Casa Milà",
+  "search": "Casa Mila",
   "location": {
     "lat": 41.395372,
     "lng": 2.161983
@@ -28,6 +32,7 @@
   "wiki_id": 1325
 }, {
   "title": "Park Güell",
+  "search": "Park Guell",
   "location": {
     "lat": 41.413654,
     "lng": 2.152770
@@ -35,6 +40,7 @@
   "wiki_id": 1324
 }, {
   "title": "Ciutadella Park",
+  "search": "Ciutadella Park",
   "location": {
     "lat": 41.389309,
     "lng": 2.186544

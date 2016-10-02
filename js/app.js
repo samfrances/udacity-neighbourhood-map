@@ -18,6 +18,7 @@ var Location = (function() {
      */
     function Location(data) {
         this.title = data.title;
+        this.search = data.search; // non-accented title string for search purposes
         this.id = data.id;
         this.location = data.location;
         this.wiki = {
@@ -39,10 +40,10 @@ var LocationsVM = (function() {
     function LocationsVM() {
         var self = this;
 
-        this.locations = ko.observableArray(); // TODO: Does this need to be observable?
-        this.filter = ko.observable("");
+        this.locations = ko.observableArray();
         this.ajaxError = ko.observable(false);
 
+        this.filter = ko.observable("");
         // Credit (with modifications): See README, Third-party code [5]
         this.filteredLocations = ko.computed(function() {
             var filter = $.trim( self.filter().toLowerCase() );
@@ -50,7 +51,8 @@ var LocationsVM = (function() {
                 return self.locations();
             } else {
                 return ko.utils.arrayFilter(self.locations(), function(location) {
-                    return (location.title.toLowerCase().indexOf(filter) !== -1);
+                    return (location.title.toLowerCase().indexOf(filter) !== -1 ||
+                            location.search.toLowerCase().indexOf(filter) !== -1);
                 });
             }
         });
@@ -116,6 +118,7 @@ var LocationsVM = (function() {
             this.mapview.activateMarker(location.id);;
         }
     }
+
     return LocationsVM;
 
 })();
