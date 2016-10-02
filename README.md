@@ -15,6 +15,8 @@ My submission for the Neighbourhood Map project of the Udacity Front-End Web Dev
     + [http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html](http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html)
 6. This Stackoverflow answer helped with detecting the escape key:
     + [http://stackoverflow.com/a/3369624](http://stackoverflow.com/a/3369624)
+7. Basic InfoWindow functionality took the following Udacity code, especially lines 115 to 129, as its starting point:
+    + [https://github.com/udacity/ud864/blob/master/Project_Code_4_WindowShoppingPart2.html](https://github.com/udacity/ud864/blob/master/Project_Code_4_WindowShoppingPart2.html)
 
 ## Other third-party resources
 

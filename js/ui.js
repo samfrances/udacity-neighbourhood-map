@@ -21,6 +21,7 @@ $(function() {
             toggleMenu();
         }
     });
+    // End credit
 
     // Set event handler on search listing, so if a link is clicked
     // and the screen size is mobile, the menu hides after a link is clicked

@@ -85,6 +85,12 @@ var MapView = (function() {
         });
 
         this.bounds = new google.maps.LatLngBounds(); // Export bounds to global scope
+
+        // Add infowindow and set close behaviour
+        this.infoWindow = new google.maps.InfoWindow();
+        this.infoWindow.addListener('closeclick', function() {
+            infowindow.setMarker(null);
+        });
     }
 
     MapView.prototype.initMarkers = function(locationsData) {
@@ -98,6 +104,9 @@ var MapView = (function() {
                 id: data.id,
             });
             newMarker.addListener('click', bounce);
+            newMarker.addListener('click', function() {
+                self.showInfowindow(newMarker);
+            })
             self.markers[data.id] = newMarker;
         });
 
@@ -122,6 +131,18 @@ var MapView = (function() {
         // Watch for changes to filtered list
         this.viewmodel.filteredLocations.subscribe(filterMarkers);
 
+    }
+
+    MapView.prototype.showInfowindow = function(marker) {
+        // Credit (with modifications): README.md, Third-party code [7]
+        if (this.infoWindow.marker != marker) {
+            this.infoWindow.marker = marker;
+
+            var data = this.viewmodel.locations()[marker.id];
+            this.infoWindow.setContent('<div>' + data.title + '</div>');
+            this.infoWindow.open(this.map, marker);
+        }
+        // End credit
     }
 
     MapView.prototype.addToMap = function(marker) {
