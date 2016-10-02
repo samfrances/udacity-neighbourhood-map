@@ -10,10 +10,12 @@ body {
     padding: 0;
 }
 
-.flex-col { /* See http://stackoverflow.com/a/15377178 */
+.flex-col {
+    /* See http://stackoverflow.com/a/15377178 */
+
     display: flex;
     flex-direction: column;
-    height:100%;
+    height: 100%;
 }
 
 header {
@@ -25,29 +27,35 @@ header {
 
 nav {
     /* Set nav to cover other elements */
+
     position: absolute;
-    top: 70px; /* height of header */
+    top: 70px;
+    /* height of header */
+
     z-index: 10;
     background: #000;
-    height: calc(100% - 70px); /* 100% - height of header */
-    max-width:100%;
-    width:450px;
+    height: calc(100% - 70px);
+    /* 100% - height of header */
 
+    max-width: 100%;
+    width: 450px;
     /* Transform and transition setting */
-    transition: 0.2s;
 
+    transition: 0.2s;
     /* Inner properties */
-    padding:20px;
-    color:white;
+
+    padding: 20px;
+    color: white;
 }
 
 /* Set on body, transforms meny off-screen */
 .menu-hidden nav {
     transform: translateX(-400px);
     /*transition: transform 0.2s;*/
+
     transition: 0.4s;
-    width:0px;
-    padding:0px;
+    width: 0px;
+    padding: 0px;
 }
 
 #map {
@@ -77,13 +85,9 @@ nav {
 }
 
 .search-listing-list {
-    padding:0;
+    padding: 0;
     list-style-type: none;
 }
-
-/*.search-listing {
-    padding: 20px;
-}*/
 
 .search-listing:hover {
     background-color: white;
