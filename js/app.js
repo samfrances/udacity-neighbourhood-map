@@ -100,10 +100,10 @@ var LocationsVM = (function() {
             },
         })
     }
-    LocationsVM.prototype.clickLocation = function(location, viewmodel) { // viewmodel argument necessary because knockout makes "this" the location object
+    LocationsVM.prototype.clickLocation = function(location) { // viewmodel argument necessary because knockout makes "this" the location object
         console.log(location.id + " " + location.title);
         if (this.mapview) {
-            this.mapview.showInfowindow(location.id);
+            this.mapview.activateMarker(location.id);;
         }
     }
     return LocationsVM;
@@ -148,9 +148,9 @@ var MapView = (function() {
                 animation: google.maps.Animation.DROP,
                 id: data.id,
             });
-            newMarker.addListener('click', bounce);
+
             newMarker.addListener('click', function() {
-                self.showInfowindow(data.id);
+                self.activateMarker(data.id);
             })
             self.markers[data.id] = newMarker;
         });
@@ -163,7 +163,7 @@ var MapView = (function() {
             self.viewmodel.locations().forEach(function(location) {
                 var marker = self.markers[location.id];
                 if (filtered_markers.includes(marker)) {
-                    self.addToMap(marker);
+                    self._addToMap(marker);
                 } else {
                     marker.setMap(null);
                 }
@@ -178,7 +178,7 @@ var MapView = (function() {
 
     }
 
-    MapView.prototype.showInfowindow = function(location_id) {
+    MapView.prototype._showInfowindow = function(location_id) {
         var marker = this.markers[location_id];
         // Credit (with modifications): README.md, Third-party code [7]
         if (this.infoWindow.marker != marker) {
@@ -203,7 +203,13 @@ var MapView = (function() {
         // End credit
     }
 
-    MapView.prototype.addToMap = function(marker) {
+    MapView.prototype.activateMarker = function(location_id) {
+        var marker = this.markers[location_id];
+        bounce(marker);
+        this._showInfowindow(location_id);
+    };
+
+    MapView.prototype._addToMap = function(marker) {
         if (marker.map == null) { // Matches null or undefined
             marker.setMap(this.map);
             this.bounds.extend(marker.position); // Change map bounds
@@ -213,12 +219,11 @@ var MapView = (function() {
 
 
     // Helper: Makes marker bounce for 3.5 seconds. Expects the parameter "this" to be the marker
-    function bounce() {
-        var self = this;
-        this.setAnimation(google.maps.Animation.BOUNCE);
+    function bounce(marker) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function() {
-            self.setAnimation(null);
-        }, 3500)
+            marker.setAnimation(null);
+        }, 3500);
     }
 
     return MapView;
