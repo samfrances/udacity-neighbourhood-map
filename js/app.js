@@ -84,7 +84,7 @@ var LocationsVM = (function() {
             });
 
             // Load corresponding wikipedia data
-            self._loadLocationsInfo()
+            self._loadLocationsInfo();
             // callback called with data once data retrieved and processed
             if (cb) {
                 cb(data);
@@ -92,7 +92,7 @@ var LocationsVM = (function() {
         }).fail(function() {
             self.ajaxError("Error fetching locations");
         });
-    }
+    };
 
     /*
      * 'Private' method, loads an informative passage from wikipedia for
@@ -131,26 +131,26 @@ var LocationsVM = (function() {
             // If data retrieved, at it to our location objects
             self.locations().forEach(function(location) {
                 location.wiki.info = data.query.pages[ location.wiki.id ].extract;
-            })
+            });
         }).fail(function() {
             // If ajax call fails, add error messages to each location object
             // and set an error on viewmodel.ajaxError.
             self.locations().forEach(function(location) {
-                var error = "Error loading Wikipedia data."
+                var error = "Error loading Wikipedia data.";
                 location.wiki.error = error;
                 self.ajaxError(error);
             });
         });
-    }
+    };
 
     /*
      * Handler for clicks on location links in sidebar. Receives Location object.
      */
     LocationsVM.prototype.clickLocation = function(location) { // viewmodel argument necessary because knockout makes "this" the location object
         if (this.mapview) {
-            this.mapview.activateMarker(location.id);;
+            this.mapview.activateMarker(location.id);
         }
-    }
+    };
 
     return LocationsVM;
 
@@ -186,7 +186,7 @@ var MapView = (function() {
         this.infoWindow.addListener('closeclick', function() {
             self._closeInfoWindow();
         });
-    }
+    };
 
     /* Method to crate and store the markers */
     MapView.prototype.initMarkers = function(locationsData) {
@@ -203,7 +203,7 @@ var MapView = (function() {
             // Add click handler to marker
             newMarker.addListener('click', function() {
                 self.activateMarker(data.id);
-            })
+            });
             // Store marker according to id of its location
             self.markers[data.id] = newMarker;
         });
@@ -239,8 +239,7 @@ var MapView = (function() {
 
         // Watch for changes to filtered list
         this.viewmodel.filteredLocations.subscribe(filterMarkers);
-
-    }
+    };
 
     /* 'Private' method for populating and displaying info window */
     MapView.prototype._showInfowindow = function(location_id) {
@@ -264,7 +263,7 @@ var MapView = (function() {
                 content += '<p>Attribution: ';
                 content += '<a href="http://en.wikipedia.org/wiki?curid=';
                 content += data.wiki.id;
-                content += '" target="_new">Wikipedia</a></p>'
+                content += '" target="_new">Wikipedia</a></p>';
             }
             content += "</div>";
 
@@ -273,13 +272,13 @@ var MapView = (function() {
             this.infoWindow.open(this.map, marker);
         }
         // End credit
-    }
+    };
 
     /* 'Private' method for closing infowindow */
     MapView.prototype._closeInfoWindow = function() {
         this.infoWindow.close();
         this.infoWindow.marker = null;
-    }
+    };
 
     /* Public method for animating marker and showing infowindow simultaneously */
     MapView.prototype.activateMarker = function(location_id) {
@@ -295,7 +294,7 @@ var MapView = (function() {
             this.bounds.extend(marker.position); // Change map bounds
             this.map.fitBounds(this.bounds);
         }
-    }
+    };
 
 
     // Helper: Makes marker bounce for 3.5 seconds. Expects the parameter "this" to be the marker
