@@ -13,6 +13,8 @@ My submission for the Neighbourhood Map project of the Udacity Front-End Web Dev
     + [https://github.com/udacity/frontend-nanodegree-feedreader](https://github.com/udacity/frontend-nanodegree-feedreader)
 5. My use of ko.utils.arrayFilter is based on that described in the article that follows, as is my binding for the search box:
     + [http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html](http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html)
+6. This Stackoverflow answer helped with detecting the escape key:
+    + [http://stackoverflow.com/a/3369624](http://stackoverflow.com/a/3369624)
 
 ## Other third-party resources
 
