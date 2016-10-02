@@ -76,6 +76,32 @@ nav {
     font-size: 20px;
 }
 
+.search-listing-list {
+    padding:0;
+    list-style-type: none;
+}
+
+/*.search-listing {
+    padding: 20px;
+}*/
+
+.search-listing:hover {
+    background-color: white;
+}
+
+.search-listing:hover a {
+    color: black;
+}
+
+.search-listing a {
+    color: white;
+    width: 100%;
+    display: block;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 15pt;
+}
+
 @media (max-width: 500px) {
     .main-heading {
         font-size: 12pt;

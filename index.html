@@ -17,8 +17,8 @@
           data-bind="value: filter,
                      valueUpdate: 'afterkeydown'">
         <!-- End credit -->
-        <ul data-bind="foreach: filteredLocations">
-          <li><a href="#" data-bind="text: title, click: $parent.clickLocation"></a></li>
+        <ul data-bind="foreach: filteredLocations" class="search-listing-list">
+          <li class="search-listing"><a href="#" data-bind="text: title, click: $parent.clickLocation"></a></li>
         </ul>
       </nav>
       <div id="map"></div>

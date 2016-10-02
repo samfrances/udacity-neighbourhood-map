@@ -64,7 +64,6 @@ var LocationsVM = (function() {
             var filtered_markers = newValue.map(function(location) {
                 return location.marker;
             });
-            console.log(filtered_markers);
             this.locations().forEach(function(location) {
                 var marker = location.marker;
                 if (filtered_markers.includes(marker)) {
