@@ -63,8 +63,11 @@ var LocationsVM = (function() {
             cb(data);
         })
     }
-    LocationsVM.prototype.clickLocation = function(location) {
+    LocationsVM.prototype.clickLocation = function(location, viewmodel) { // viewmodel argument necessary because knockout makes "this" the location object
         console.log(location.id + " " + location.title);
+        if (this.mapview) {
+            this.mapview.showInfowindow(location.id);
+        }
     }
     return LocationsVM;
 
@@ -74,10 +77,14 @@ var LocationsVM = (function() {
 var MapView = (function() {
 
     function MapView(viewmodel) {
+        // Mutually register viewmodel and mapview
         this.viewmodel = viewmodel;
+        this.viewmodel.mapview = this;
     }
 
     MapView.prototype.initMap = function() {
+        var self = this;
+
         this.map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 41.390205, lng: 2.154007},
             zoom: 14,
@@ -89,7 +96,8 @@ var MapView = (function() {
         // Add infowindow and set close behaviour
         this.infoWindow = new google.maps.InfoWindow();
         this.infoWindow.addListener('closeclick', function() {
-            infowindow.setMarker(null);
+            self.infoWindow.marker = null;
+            self.infoWindow.close();
         });
     }
 
@@ -105,7 +113,7 @@ var MapView = (function() {
             });
             newMarker.addListener('click', bounce);
             newMarker.addListener('click', function() {
-                self.showInfowindow(newMarker);
+                self.showInfowindow(data.id);
             })
             self.markers[data.id] = newMarker;
         });
@@ -133,7 +141,8 @@ var MapView = (function() {
 
     }
 
-    MapView.prototype.showInfowindow = function(marker) {
+    MapView.prototype.showInfowindow = function(location_id) {
+        var marker = this.markers[location_id];
         // Credit (with modifications): README.md, Third-party code [7]
         if (this.infoWindow.marker != marker) {
             this.infoWindow.marker = marker;

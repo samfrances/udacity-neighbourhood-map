@@ -18,7 +18,8 @@
                      valueUpdate: 'afterkeydown'">
         <!-- End credit -->
         <ul data-bind="foreach: filteredLocations" class="search-listing-list">
-          <li class="search-listing"><a href="#" data-bind="text: title, click: $parent.clickLocation"></a></li>
+          <!-- Note click binding changes default this Argument to make viewmode.clickLocation work -->
+          <li class="search-listing"><a href="#" data-bind="text: title, click: $parent.clickLocation.bind($parent, $data)"></a></li>
         </ul>
       </nav>
       <div id="map"></div>
