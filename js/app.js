@@ -20,6 +20,7 @@ var Location = (function() {
         this.title = data.title;
         this.id = data.id;
         this.location = data.location;
+        this.wiki_id = data.wiki_id;
     }
 
     return Location;
@@ -52,7 +53,7 @@ var LocationsVM = (function() {
         });
         // End credit
     }
-    LocationsVM.prototype.loadData = function(cb, thisArg) {
+    LocationsVM.prototype.loadLocations = function(cb, thisArg) {
         var self = this;
         $.getJSON("data/data.json", function(data) {
             data.forEach(function(location, i) {
@@ -61,6 +62,48 @@ var LocationsVM = (function() {
             });
             // callback called with data once data retrieved and processed
             cb(data);
+        })
+    }
+    LocationsVM.prototype.loadLocationsInfo = function() {
+        var self = this;
+
+        var pageids = this.locations().map(function(location) {
+            return location.wiki_id;
+        }).join("|");
+
+        // Build wiki_url
+        var wiki_endpoint = "https://en.wikipedia.org/w/api.php";
+
+        // Credit (with modifications): README.md, Third-pary code: [8]
+        var wiki_queries = $.param({
+
+            action: "query",
+            pageids: pageids,
+            prop: "extracts", // I want extracts
+            exintro: "",     // Just get the intro
+            explaintext: "", // Plain text
+            exlimit: "max",  // Return as many of the extracts as possible (not just one)
+            format: "json",
+        });
+        // End credit
+
+        var wiki_url = wiki_endpoint + "?" + wiki_queries;
+
+        $.ajax({
+            url: wiki_url,
+            data: {
+                action: "query",
+                pageids: pageids,
+                prop: "extracts",
+                exintro: "",
+                format: "json",
+            },
+            dataType: "jsonp",
+            success: function(data) {
+                self.locations().forEach(function(location) {
+                    location.wiki_info = data.query.pages[ location.wiki_id ].extract;
+                })
+            },
         })
     }
     LocationsVM.prototype.clickLocation = function(location, viewmodel) { // viewmodel argument necessary because knockout makes "this" the location object
@@ -182,7 +225,8 @@ var mapview = new MapView(viewmodel);
 
 function initMap() {
     mapview.initMap();
-    viewmodel.loadData(function(data){
+    viewmodel.loadLocations(function(data){
         mapview.initMarkers(data);
+        viewmodel.loadLocationsInfo()
     });
 }

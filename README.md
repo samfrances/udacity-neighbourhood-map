@@ -17,6 +17,8 @@ My submission for the Neighbourhood Map project of the Udacity Front-End Web Dev
     + [http://stackoverflow.com/a/3369624](http://stackoverflow.com/a/3369624)
 7. Basic InfoWindow functionality took the following Udacity code, especially lines 115 to 129, as its starting point:
     + [https://github.com/udacity/ud864/blob/master/Project_Code_4_WindowShoppingPart2.html](https://github.com/udacity/ud864/blob/master/Project_Code_4_WindowShoppingPart2.html)
+8. This Stackoverflow anwer provided some guidance in constructing my Wikipedia API query:
+    + [http://stackoverflow.com/questions/8555320/is-there-a-clean-wikipedia-api-just-for-retrieve-content-summary](http://stackoverflow.com/questions/8555320/is-there-a-clean-wikipedia-api-just-for-retrieve-content-summary)
 
 ## Other third-party resources
 

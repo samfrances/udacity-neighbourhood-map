@@ -3,35 +3,41 @@
   "location": {
     "lat": 41.403622,
     "lng": 2.174378
-  }
+  },
+  "wiki_id": 59545
 }, {
   "title": "Casa Batlló",
   "location": {
     "lat": 41.391649,
     "lng": 2.164889
-  }
+  },
+  "wiki_id": 1322
 }, {
   "title": "La Rambla",
   "location": {
     "lat": 41.380662,
     "lng": 2.173862
-  }
+  },
+  "wiki_id": 923085
 }, {
   "title": "Casa Milà",
   "location": {
     "lat": 41.395372,
     "lng": 2.161983
-  }
+  },
+  "wiki_id": 1325
 }, {
   "title": "Park Güell",
   "location": {
     "lat": 41.413654,
     "lng": 2.152770
-  }
+  },
+  "wiki_id": 1324
 }, {
   "title": "Ciutadella Park",
   "location": {
     "lat": 41.389309,
     "lng": 2.186544
-  }
+  },
+  "wiki_id": 25842473
 }]
