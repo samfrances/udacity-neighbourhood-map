@@ -10,6 +10,16 @@ python -m SimpleHTTPServer
 ```
 Then open your browser at [http://localhost:8000/](http://localhost:8000/).
 
+## Libraries used
+
+- Knockout 3.4.0
+- JQuery 3.1.1
+
+## APIs used
+
+- Google Maps API
+- Wikipedia API
+
 ## Third-party code
 
 1. I used this page from the Udacity Google Maps APIs course as my starting point for project:
