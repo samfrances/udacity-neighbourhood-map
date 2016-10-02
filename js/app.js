@@ -289,7 +289,7 @@ var MapView = (function() {
 
     /* Helper method, adds marker to map only if not already there */
     MapView.prototype._addToMap = function(marker) {
-        if (marker.map == null) { // Matches null or undefined
+        if (marker.map === null) { // Matches null or undefined
             marker.setMap(this.map);
             this.bounds.extend(marker.position); // Change map bounds
             this.map.fitBounds(this.bounds);
