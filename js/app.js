@@ -1,5 +1,5 @@
 /**
- * Model class representing locations
+ * Model 'class' representing locations
  */
 var Location = (function() {
 
@@ -76,10 +76,13 @@ var LocationsVM = (function() {
         var self = this;
 
         $.getJSON("data/data.json", function(data) {
+            // Populate objects in viewmodel.locations observableArray with
+            // retrieved data.
             data.forEach(function(location, i) {
                 location.id = i;
                 self.locations.push( new Location(location) );
             });
+
             // Load corresponding wikipedia data
             self._loadLocationsInfo()
             // callback called with data once data retrieved and processed
@@ -91,15 +94,20 @@ var LocationsVM = (function() {
         });
     }
 
+    /*
+     * 'Private' method, loads an informative passage from wikipedia for
+     * each location. Called in success for ajax call which loads the basic
+     * location data in viewmodel.loadLocations.
+     */
     LocationsVM.prototype._loadLocationsInfo = function() {
         var self = this;
+
+        // Build wiki_url
+        var wiki_endpoint = "https://en.wikipedia.org/w/api.php";
 
         var pageids = this.locations().map(function(location) {
             return location.wiki.id;
         }).join("|");
-
-        // Build wiki_url
-        var wiki_endpoint = "https://en.wikipedia.org/w/api.php";
 
         // Credit (with modifications): README.md, Third-pary code: [8]
         var wiki_queries = $.param({
@@ -120,11 +128,13 @@ var LocationsVM = (function() {
             url: wiki_url,
             dataType: "jsonp",
         }).done(function(data) {
-            console.log(data);
+            // If data retrieved, at it to our location objects
             self.locations().forEach(function(location) {
                 location.wiki.info = data.query.pages[ location.wiki.id ].extract;
             })
         }).fail(function() {
+            // If ajax call fails, add error messages to each location object
+            // and set an error on viewmodel.ajaxError.
             self.locations().forEach(function(location) {
                 var error = "Error loading Wikipedia data."
                 location.wiki.error = error;
@@ -132,6 +142,10 @@ var LocationsVM = (function() {
             });
         });
     }
+
+    /*
+     * Handler for clicks on location links in sidebar. Receives Location object.
+     */
     LocationsVM.prototype.clickLocation = function(location) { // viewmodel argument necessary because knockout makes "this" the location object
         console.log(location.id + " " + location.title);
         if (this.mapview) {
@@ -143,15 +157,19 @@ var LocationsVM = (function() {
 
 })();
 
-
+/**
+ * View 'class' for dealing with Map functionality
+ */
 var MapView = (function() {
 
+    /* @constructor */
     function MapView(viewmodel) {
         // Mutually register viewmodel and mapview
         this.viewmodel = viewmodel;
         this.viewmodel.mapview = this;
     }
 
+    /* Method to initialise the map */
     MapView.prototype.initMap = function() {
         var self = this;
 
@@ -161,7 +179,8 @@ var MapView = (function() {
             mapTypeControl: false, // Remove controls from top left corner of map
         });
 
-        this.bounds = new google.maps.LatLngBounds(); // Export bounds to global scope
+        // Create bounds object, to be adjusted by markers
+        this.bounds = new google.maps.LatLngBounds();
 
         // Add infowindow and set close behaviour
         this.infoWindow = new google.maps.InfoWindow();
@@ -170,6 +189,7 @@ var MapView = (function() {
         });
     }
 
+    /* Method to crate and store the markers */
     MapView.prototype.initMarkers = function(locationsData) {
         var self = this;
         this.markers = {};
@@ -181,13 +201,15 @@ var MapView = (function() {
                 id: data.id,
             });
 
+            // Add click handler to marker
             newMarker.addListener('click', function() {
                 self.activateMarker(data.id);
             })
+            // Store marker according to id of its location
             self.markers[data.id] = newMarker;
         });
 
-        // Function to filter markers when filteredLocations updates
+        // Callback function to filter markers when filteredLocations updates
         function filterMarkers(filteredLocs) {
             // Get all the markers that pass the search filter
             var filtered_markers = filteredLocs.map(function(location) {
@@ -198,7 +220,8 @@ var MapView = (function() {
             self.viewmodel.locations().forEach(function(location) {
                 var marker = self.markers[location.id];
                 if (filtered_markers.includes(marker)) {
-                    self._addToMap(marker);
+                    // Add marker if it passes search filter
+                    self._addToMap(marker); // _addToMap adds marker to map if not already there
                 } else {
 
                     // Close the infowindow if attached to filtered-out marker
@@ -220,18 +243,23 @@ var MapView = (function() {
 
     }
 
+    /* 'Private' method for populating and displaying info window */
     MapView.prototype._showInfowindow = function(location_id) {
         var marker = this.markers[location_id];
         // Credit (with modifications): README.md, Third-party code [7]
         if (this.infoWindow.marker != marker) {
             this.infoWindow.marker = marker;
 
+            // Get data for infowindow (relevant Location object)
             var data = this.viewmodel.locations()[marker.id];
 
+            // Write content for infowindow
             var content = '<div class="infowindow">';
             content += "<h3>" + data.title + '</h3>';
+            // Display error if there is one
             if (data.wiki.error) {
                 content += "<p>" + data.wiki.error + "</p>";
+            // Otherwise display wikipedia info
             } else if (data.wiki.info) {
                 content += "<p>" + data.wiki.info + "</p>";
                 content += '<p>Attribution: ';
@@ -241,23 +269,27 @@ var MapView = (function() {
             }
             content += "</div>";
 
+            // Populate and place infowindow
             this.infoWindow.setContent(content);
             this.infoWindow.open(this.map, marker);
         }
         // End credit
     }
 
+    /* 'Private' method for closing infowindow */
     MapView.prototype._closeInfoWindow = function() {
         this.infoWindow.close();
         this.infoWindow.marker = null;
     }
 
+    /* Public method for animating marker and showing infowindow simultaneously */
     MapView.prototype.activateMarker = function(location_id) {
         var marker = this.markers[location_id];
         bounce(marker);
         this._showInfowindow(location_id);
     };
 
+    /* Helper method, adds marker to map only if not already there */
     MapView.prototype._addToMap = function(marker) {
         if (marker.map == null) { // Matches null or undefined
             marker.setMap(this.map);
@@ -277,6 +309,7 @@ var MapView = (function() {
 
     return MapView;
 })();
+
 
 // Kick off app
 var viewmodel = new LocationsVM();
