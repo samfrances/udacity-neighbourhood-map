@@ -13,7 +13,10 @@
       </header>
       <nav>
         <!-- Credit: See README, Third-party code [5] -->
-        <input type="text" class="searchbox" data-bind="value: filter, valueUpdate: 'afterkeydown'">
+        <input type="text" class="searchbox"
+          data-bind="value: filter,
+                     valueUpdate: 'afterkeydown',
+                     event: { input: filterMarkers }">
         <!-- End credit -->
         <ul data-bind="foreach: filteredLocations()">
           <li><a href="#" data-bind="text: title, click: $parent.clickLocation"></a></li>

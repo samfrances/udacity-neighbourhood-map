@@ -42,7 +42,7 @@ var LocationsVM = (function() {
     function LocationsVM() {
         var self = this;
 
-        this.locations = ko.observableArray();
+        this.locations = ko.observableArray(); // TODO: Does this need to be observable?
         this.filter = ko.observable("");
 
         // Credit (with modifications): See README, Third-party code [5]
@@ -72,6 +72,20 @@ var LocationsVM = (function() {
     LocationsVM.prototype.clickLocation = function(location) {
         console.log(location.id + " " + location.title);
     }
+    LocationsVM.prototype.filterMarkers = function() {
+        var filtered_markers = this.filteredLocations().map(function(location) {
+            return location.marker;
+        });
+        this.locations().forEach(function(location) {
+            var marker = location.marker;
+            if (filtered_markers.includes(marker)) {
+                addToMap(marker);
+            } else {
+                marker.setMap(null);
+            }
+        });
+        return true;
+    }
 
     return LocationsVM;
 
@@ -91,4 +105,11 @@ function initMap() {
     // KO Experimentation REMOVE_COMMENT
     vm = new LocationsVM();
     ko.applyBindings(vm);
+}
+
+// Adds marker to map if it isn't aleady there.
+function addToMap(marker) {
+    if (marker.map == null) { // Matches null or undefined
+        marker.setMap(map);
+    }
 }
