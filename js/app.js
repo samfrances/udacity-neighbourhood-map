@@ -20,7 +20,9 @@ var Location = (function() {
         this.title = data.title;
         this.id = data.id;
         this.location = data.location;
-        this.wiki_id = data.wiki_id;
+        this.wiki = {
+            id: data.wiki_id,
+        };
     }
 
     return Location;
@@ -39,6 +41,7 @@ var LocationsVM = (function() {
 
         this.locations = ko.observableArray(); // TODO: Does this need to be observable?
         this.filter = ko.observable("");
+        this.error = ko.observable("");
 
         // Credit (with modifications): See README, Third-party code [5]
         this.filteredLocations = ko.computed(function() {
@@ -62,17 +65,17 @@ var LocationsVM = (function() {
             });
             // callback called with data once data retrieved and processed
             cb(data);
-        })
+        });
     }
     LocationsVM.prototype.loadLocationsInfo = function() {
         var self = this;
 
         var pageids = this.locations().map(function(location) {
-            return location.wiki_id;
+            return location.wiki.id;
         }).join("|");
 
         // Build wiki_url
-        var wiki_endpoint = "https://en.wikipedia.org/w/api.php";
+        var wiki_endpoint = "https://en.wikiiiipedia.org/w/api.php";
 
         // Credit (with modifications): README.md, Third-pary code: [8]
         var wiki_queries = $.param({
@@ -92,13 +95,18 @@ var LocationsVM = (function() {
         $.ajax({
             url: wiki_url,
             dataType: "jsonp",
-            success: function(data) {
-                console.log(data);
-                self.locations().forEach(function(location) {
-                    location.wiki_info = data.query.pages[ location.wiki_id ].extract;
-                })
-            },
-        })
+        }).done(function(data) {
+            console.log(data);
+            self.locations().forEach(function(location) {
+                location.wiki.info = data.query.pages[ location.wiki.id ].extract;
+            })
+        }).fail(function() {
+            self.locations().forEach(function(location) {
+                var error = "Error loading Wikipedia data."
+                location.wiki.error = error;
+                self.error(error);
+            });
+        });
     }
     LocationsVM.prototype.clickLocation = function(location) { // viewmodel argument necessary because knockout makes "this" the location object
         console.log(location.id + " " + location.title);
@@ -188,11 +196,13 @@ var MapView = (function() {
 
             var content = '<div class="infowindow">';
             content += "<h3>" + data.title + '</h3>';
-            if (data.wiki_info) {
-                content += "<p>" + data.wiki_info + "</p>";
+            if (data.wiki.error) {
+                content += "<p>" + data.wiki.error + "</p>";
+            } else if (data.wiki.info) {
+                content += "<p>" + data.wiki.info + "</p>";
                 content += '<p>Attribution: ';
                 content += '<a href="http://en.wikipedia.org/wiki?curid=';
-                content += data.wiki_id;
+                content += data.wiki.id;
                 content += '" target="_new">Wikipedia</a></p>'
             }
             content += "</div>";
