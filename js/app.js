@@ -146,8 +146,7 @@ var MapView = (function() {
         // Add infowindow and set close behaviour
         this.infoWindow = new google.maps.InfoWindow();
         this.infoWindow.addListener('closeclick', function() {
-            self.infoWindow.marker = null;
-            self.infoWindow.close();
+            self._closeInfoWindow();
         });
     }
 
@@ -170,14 +169,24 @@ var MapView = (function() {
 
         // Function to filter markers when filteredLocations updates
         function filterMarkers(filteredLocs) {
+            // Get all the markers that pass the search filter
             var filtered_markers = filteredLocs.map(function(location) {
                 return self.markers[location.id];
             });
+            // For each of these markers, add the to the map if not already
+            // there, and remove all others.
             self.viewmodel.locations().forEach(function(location) {
                 var marker = self.markers[location.id];
                 if (filtered_markers.includes(marker)) {
                     self._addToMap(marker);
                 } else {
+
+                    // Close the infowindow if attached to filtered-out marker
+                    if (self.infoWindow.marker == marker) {
+                        self._closeInfoWindow();
+                    }
+
+                    // Remove the marker
                     marker.setMap(null);
                 }
             });
@@ -216,6 +225,11 @@ var MapView = (function() {
             this.infoWindow.open(this.map, marker);
         }
         // End credit
+    }
+
+    MapView.prototype._closeInfoWindow = function() {
+        this.infoWindow.close();
+        this.infoWindow.marker = null;
     }
 
     MapView.prototype.activateMarker = function(location_id) {
