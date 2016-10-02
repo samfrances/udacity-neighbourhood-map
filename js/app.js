@@ -26,6 +26,7 @@ var Location = (function() {
             animation: google.maps.Animation.DROP,
             id: data.id,
         });
+        this.marker.addListener('click', bounce);
     }
 
     return Location;
@@ -72,7 +73,6 @@ var LocationsVM = (function() {
                     marker.setMap(null);
                 }
             });
-            return true;
         }, this);
 
         this.loadData();
@@ -109,9 +109,18 @@ function initMap() {
     ko.applyBindings(vm);
 }
 
+// Marker utils
 // Adds marker to map if it isn't aleady there.
 function addToMap(marker) {
     if (marker.map == null) { // Matches null or undefined
         marker.setMap(map);
     }
+}
+
+function bounce() {
+    var self = this;
+    this.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+        self.setAnimation(null);
+    }, 3500)
 }
