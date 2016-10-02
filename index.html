@@ -21,6 +21,7 @@
           <!-- Note click binding changes default this Argument to make viewmode.clickLocation work -->
           <li class="search-listing"><a href="#" data-bind="text: title, click: $parent.clickLocation.bind($parent, $data)"></a></li>
         </ul>
+        <div data-bind="if: ajaxError"><div data-bind="text: ajaxError" class="error"></div></div>
       </nav>
       <div id="map"></div>
     </div>

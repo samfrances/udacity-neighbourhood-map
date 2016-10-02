@@ -41,7 +41,7 @@ var LocationsVM = (function() {
 
         this.locations = ko.observableArray(); // TODO: Does this need to be observable?
         this.filter = ko.observable("");
-        this.error = ko.observable("");
+        this.ajaxError = ko.observable(false);
 
         // Credit (with modifications): See README, Third-party code [5]
         this.filteredLocations = ko.computed(function() {
@@ -75,7 +75,7 @@ var LocationsVM = (function() {
         }).join("|");
 
         // Build wiki_url
-        var wiki_endpoint = "https://en.wikiiiipedia.org/w/api.php";
+        var wiki_endpoint = "https://en.wikipedia.org/w/api.php";
 
         // Credit (with modifications): README.md, Third-pary code: [8]
         var wiki_queries = $.param({
@@ -104,7 +104,7 @@ var LocationsVM = (function() {
             self.locations().forEach(function(location) {
                 var error = "Error loading Wikipedia data."
                 location.wiki.error = error;
-                self.error(error);
+                self.ajaxError(error);
             });
         });
     }

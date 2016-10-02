@@ -102,6 +102,16 @@ nav {
     font-size: 15pt;
 }
 
+.error {
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 20px;
+    font-weight: bold;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
 @media (max-width: 500px) {
     .main-heading {
         font-size: 12pt;

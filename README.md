@@ -19,6 +19,8 @@ My submission for the Neighbourhood Map project of the Udacity Front-End Web Dev
     + [https://github.com/udacity/ud864/blob/master/Project_Code_4_WindowShoppingPart2.html](https://github.com/udacity/ud864/blob/master/Project_Code_4_WindowShoppingPart2.html)
 8. This Stackoverflow anwer provided some guidance in constructing my Wikipedia API query:
     + [http://stackoverflow.com/questions/8555320/is-there-a-clean-wikipedia-api-just-for-retrieve-content-summary](http://stackoverflow.com/questions/8555320/is-there-a-clean-wikipedia-api-just-for-retrieve-content-summary)
+9. Colours for .error class borrowed from Bootstrap:
+    + [http://getbootstrap.com/components/](http://getbootstrap.com/components/)
 
 ## Other third-party resources
 
