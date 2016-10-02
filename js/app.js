@@ -26,7 +26,7 @@ var Location = (function() {
             animation: google.maps.Animation.DROP,
             id: data.id,
         });
-        this.marker.addListener('click', bounce);
+        this.marker.addListener('click', markerUtils.bounce);
     }
 
     return Location;
@@ -68,7 +68,7 @@ var LocationsVM = (function() {
             this.locations().forEach(function(location) {
                 var marker = location.marker;
                 if (filtered_markers.includes(marker)) {
-                    addToMap(marker);
+                    markerUtils.addToMap(marker);
                 } else {
                     marker.setMap(null);
                 }
@@ -109,18 +109,22 @@ function initMap() {
     ko.applyBindings(vm);
 }
 
-// Marker utils
-// Adds marker to map if it isn't aleady there.
-function addToMap(marker) {
-    if (marker.map == null) { // Matches null or undefined
-        marker.setMap(map);
-    }
-}
+// Assorted functions for manipulating google maps markers
+var markerUtils = {
 
-function bounce() {
-    var self = this;
-    this.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function() {
-        self.setAnimation(null);
-    }, 3500)
-}
+    // Adds marker to map if it is not already there
+    addToMap: function(marker) {
+        if (marker.map == null) { // Matches null or undefined
+            marker.setMap(map);
+        }
+    },
+
+    // Makes marker bounce for 3.5 seconds. Expects the parameter "this" to be the marker
+    bounce: function() {
+        var self = this;
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+            self.setAnimation(null);
+        }, 3500)
+    },
+};
