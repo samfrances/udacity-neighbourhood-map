@@ -15,10 +15,9 @@
         <!-- Credit: See README, Third-party code [5] -->
         <input type="text" class="searchbox"
           data-bind="value: filter,
-                     valueUpdate: 'afterkeydown',
-                     event: { input: filterMarkers }">
+                     valueUpdate: 'afterkeydown'">
         <!-- End credit -->
-        <ul data-bind="foreach: filteredLocations()">
+        <ul data-bind="foreach: filteredLocations">
           <li><a href="#" data-bind="text: title, click: $parent.clickLocation"></a></li>
         </ul>
       </nav>

@@ -58,6 +58,24 @@ var LocationsVM = (function() {
         });
         // End credit
 
+        // Filter markers when filteredLocations updates
+        this.filteredLocations.subscribe(function(newValue) {
+            var self = this;
+            var filtered_markers = newValue.map(function(location) {
+                return location.marker;
+            });
+            console.log(filtered_markers);
+            this.locations().forEach(function(location) {
+                var marker = location.marker;
+                if (filtered_markers.includes(marker)) {
+                    addToMap(marker);
+                } else {
+                    marker.setMap(null);
+                }
+            });
+            return true;
+        }, this);
+
         this.loadData();
     }
     LocationsVM.prototype.loadData = function() {
@@ -72,21 +90,6 @@ var LocationsVM = (function() {
     LocationsVM.prototype.clickLocation = function(location) {
         console.log(location.id + " " + location.title);
     }
-    LocationsVM.prototype.filterMarkers = function() {
-        var filtered_markers = this.filteredLocations().map(function(location) {
-            return location.marker;
-        });
-        this.locations().forEach(function(location) {
-            var marker = location.marker;
-            if (filtered_markers.includes(marker)) {
-                addToMap(marker);
-            } else {
-                marker.setMap(null);
-            }
-        });
-        return true;
-    }
-
     return LocationsVM;
 
 })();
