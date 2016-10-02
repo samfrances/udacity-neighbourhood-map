@@ -1,8 +1,8 @@
 /* File for Javascript purely related to the UI and view */
-window.addEventListener('load', function() {
+$(function() {
     // Set event listener for showing or hiding the sliding menu
-    document.getElementsByClassName("menu-btn")[0].addEventListener("click", function() {
-        document.body.classList.toggle("menu-hidden");
+    $(".menu-btn").click(function() {
+        $(document.body).toggleClass("menu-hidden");
     });
 
     // Event listener to close sliding menu when esc key is pressed
