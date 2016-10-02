@@ -1,6 +1,15 @@
 # udacity-neighbourhood-map
 My submission for the Neighbourhood Map project of the Udacity Front-End Web Developer Nanodegree
 
+## How to run
+
+To run the code on a local server, go to the root directory of the repository and run:
+
+```
+python -m SimpleHTTPServer
+```
+Then open your browser at [http://localhost:8000/](http://localhost:8000/).
+
 ## Third-party code
 
 1. I used this page from the Udacity Google Maps APIs course as my starting point for project:
