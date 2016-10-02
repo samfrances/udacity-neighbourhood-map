@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Barcelona Tourist Attractions</title>
   </head>
-  <body class="menu-hidden">
+  <!-- Set menu to visible if there is an ajax error -->
+  <body class="menu-hidden" data-bind="css: { 'menu-hidden': !ajaxError() }">
     <div id="container" class="flex-col">
       <header>
         <a href="#" class="menu-btn"></a>
