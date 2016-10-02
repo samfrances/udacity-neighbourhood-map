@@ -8,11 +8,13 @@ var Location = (function() {
      * @param {Object} - Object literal with data relating to the location.
      *      {
      *           title: {string},
+     *           search: {sring},   // Searchable version of title, no accents
      *           id: {Number},
      *           location: {
      *              lat: {Number},
      *              lng: {Number}
      *           }
+     *           wiki_id: {Number}  // Wikipedia API article ID
      *      }
      *
      */
@@ -41,16 +43,22 @@ var LocationsVM = (function() {
         var self = this;
 
         this.locations = ko.observableArray();
-        this.ajaxError = ko.observable(false);
+        this.ajaxError = ko.observable(false);  // Changes to contain error message if ajax error takes place
 
+        // Search filter, bound to search bar in view
         this.filter = ko.observable("");
+
         // Credit (with modifications): See README, Third-party code [5]
+        // Provides a filtered version of locations, filtered according to the search term
         this.filteredLocations = ko.computed(function() {
+            // trim the search term and put in lowercase
             var filter = $.trim( self.filter().toLowerCase() );
             if (!filter) {
                 return self.locations();
             } else {
                 return ko.utils.arrayFilter(self.locations(), function(location) {
+                    // A location is included if its title or search field matches the
+                    // search term (after transforming to lowercase).
                     return (location.title.toLowerCase().indexOf(filter) !== -1 ||
                             location.search.toLowerCase().indexOf(filter) !== -1);
                 });
@@ -58,8 +66,15 @@ var LocationsVM = (function() {
         });
         // End credit
     }
-    LocationsVM.prototype.loadLocations = function(cb, thisArg) {
+
+    /**
+     * Loads locatons data from server using Ajax.
+     * @param {function} cb - An optional callback to be called once data is loaded,
+     *      which gets passed that data with an id added.
+     */
+    LocationsVM.prototype.loadLocations = function(cb) {
         var self = this;
+
         $.getJSON("data/data.json", function(data) {
             data.forEach(function(location, i) {
                 location.id = i;
@@ -68,9 +83,14 @@ var LocationsVM = (function() {
             // Load corresponding wikipedia data
             self._loadLocationsInfo()
             // callback called with data once data retrieved and processed
-            cb(data);
+            if (cb) {
+                cb(data);
+            }
+        }).fail(function() {
+            self.ajaxError("Error fetching locations");
         });
     }
+
     LocationsVM.prototype._loadLocationsInfo = function() {
         var self = this;
 
