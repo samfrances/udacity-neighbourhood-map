@@ -96,7 +96,7 @@ var MapView = (function() {
                 animation: google.maps.Animation.DROP,
                 id: data.id,
             });
-            newMarker.addListener('click', markerUtils.bounce);
+            newMarker.addListener('click', bounce);
             self.markers[data.id] = newMarker;
         });
 
@@ -131,6 +131,16 @@ var MapView = (function() {
         }
     }
 
+
+    // Helper: Makes marker bounce for 3.5 seconds. Expects the parameter "this" to be the marker
+    function bounce() {
+        var self = this;
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+            self.setAnimation(null);
+        }, 3500)
+    }
+
     return MapView;
 })();
 
@@ -145,15 +155,3 @@ function initMap() {
         mapview.initMarkers(data);
     });
 }
-
-// Assorted functions for manipulating google maps markers
-var markerUtils = {
-    // Makes marker bounce for 3.5 seconds. Expects the parameter "this" to be the marker
-    bounce: function() {
-        var self = this;
-        this.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function() {
-            self.setAnimation(null);
-        }, 3500)
-    },
-};
