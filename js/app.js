@@ -147,7 +147,6 @@ var LocationsVM = (function() {
      * Handler for clicks on location links in sidebar. Receives Location object.
      */
     LocationsVM.prototype.clickLocation = function(location) { // viewmodel argument necessary because knockout makes "this" the location object
-        console.log(location.id + " " + location.title);
         if (this.mapview) {
             this.mapview.activateMarker(location.id);;
         }
