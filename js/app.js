@@ -79,10 +79,10 @@ var LocationsVM = (function() {
 
             action: "query",
             pageids: pageids,
-            prop: "extracts", // I want extracts
-            exintro: "",     // Just get the intro
-            explaintext: "", // Plain text
-            exlimit: "max",  // Return as many of the extracts as possible (not just one)
+            prop: "extracts",   // Get extracts
+            exintro: "",        // Just get the intro
+            explaintext: "",    // Plain text
+            exlimit: "max",     // Return as many of the extracts as possible (not just one)
             format: "json",
         });
         // End credit
@@ -91,15 +91,9 @@ var LocationsVM = (function() {
 
         $.ajax({
             url: wiki_url,
-            data: {
-                action: "query",
-                pageids: pageids,
-                prop: "extracts",
-                exintro: "",
-                format: "json",
-            },
             dataType: "jsonp",
             success: function(data) {
+                console.log(data);
                 self.locations().forEach(function(location) {
                     location.wiki_info = data.query.pages[ location.wiki_id ].extract;
                 })
@@ -196,6 +190,10 @@ var MapView = (function() {
             content += "<h3>" + data.title + '</h3>';
             if (data.wiki_info) {
                 content += "<p>" + data.wiki_info + "</p>";
+                content += '<p>Attribution: ';
+                content += '<a href="http://en.wikipedia.org/wiki?curid=';
+                content += data.wiki_id;
+                content += '" target="_new">Wikipedia</a></p>'
             }
             content += "</div>";
 
