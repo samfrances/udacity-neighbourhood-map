@@ -20,13 +20,6 @@ var Location = (function() {
         this.title = data.title;
         this.id = data.id;
         this.location = data.location;
-        this.marker =  new google.maps.Marker({
-            position: data.location,
-            title: data.title,
-            animation: google.maps.Animation.DROP,
-            id: data.id,
-        });
-        this.marker.addListener('click', markerUtils.bounce);
     }
 
     return Location;
@@ -58,32 +51,16 @@ var LocationsVM = (function() {
             }
         });
         // End credit
-
-        // Filter markers when filteredLocations updates
-        this.filteredLocations.subscribe(function(newValue) {
-            var self = this;
-            var filtered_markers = newValue.map(function(location) {
-                return location.marker;
-            });
-            this.locations().forEach(function(location) {
-                var marker = location.marker;
-                if (filtered_markers.includes(marker)) {
-                    markerUtils.addToMap(marker);
-                } else {
-                    marker.setMap(null);
-                }
-            });
-        }, this);
-
-        this.loadData();
     }
-    LocationsVM.prototype.loadData = function() {
+    LocationsVM.prototype.loadData = function(cb, thisArg) {
         var self = this;
         $.getJSON("data/data.json", function(data) {
             data.forEach(function(location, i) {
                 location.id = i;
                 self.locations.push( new Location(location) );
             });
+            // callback called with data once data retrieved and processed
+            cb(data);
         })
     }
     LocationsVM.prototype.clickLocation = function(location) {
@@ -93,37 +70,95 @@ var LocationsVM = (function() {
 
 })();
 
+var MapView = (function() {
+
+    function MapView(viewmodel) {
+        this.viewmodel = viewmodel;
+    }
+
+    MapView.prototype.initMap = function() {
+        this.map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 41.390205, lng: 2.154007},
+            zoom: 14,
+            mapTypeControl: false, // Remove controls from top left corner of map
+        });
+
+        this.bounds = new google.maps.LatLngBounds(); // Export bounds to global scope
+    }
+
+    MapView.prototype.initMarkers = function(locationsData) {
+        var self = this;
+        this.markers = {};
+        locationsData.forEach(function(data) {
+            var newMarker = new google.maps.Marker({
+                position: data.location,
+                title: data.title,
+                animation: google.maps.Animation.DROP,
+                id: data.id,
+            });
+            newMarker.addListener('click', markerUtils.bounce);
+            self.markers[data.id] = newMarker;
+        });
+
+        // Function to filter markers when filteredLocations updates
+        function filterMarkers(filteredLocs) {
+            var filtered_markers = filteredLocs.map(function(location) {
+                return self.markers[location.id];
+            });
+            self.viewmodel.locations().forEach(function(location) {
+                var marker = self.markers[location.id];
+                if (filtered_markers.includes(marker)) {
+                    self.addToMap(marker);
+                } else {
+                    marker.setMap(null);
+                }
+            });
+        }
+
+        // Place markers initially
+        filterMarkers(this.viewmodel.locations());
+
+        // Watch for changes to filtered list
+        this.viewmodel.filteredLocations.subscribe(filterMarkers);
+
+    }
+
+    MapView.prototype.addToMap = function(marker) {
+        if (marker.map == null) { // Matches null or undefined
+            marker.setMap(this.map);
+            this.bounds.extend(marker.position); // Change map bounds
+            this.map.fitBounds(this.bounds);
+        }
+    }
+
+    return MapView;
+})();
 
 var vm; // TODO: move declaraton into initMap once no longer needed for debugging
-var map;
-var bounds;
+var mv;
 function initMap() {
 // Constructor creates a new map - only center and zoom are required.
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 41.390205, lng: 2.154007},
-        zoom: 14,
-        mapTypeControl: false, // Remove controls from top left corner of map
-    });
+    // map = new google.maps.Map(document.getElementById('map'), {
+    //     center: {lat: 41.390205, lng: 2.154007},
+    //     zoom: 14,
+    //     mapTypeControl: false, // Remove controls from top left corner of map
+    // });
 
-    bounds = new google.maps.LatLngBounds(); // Export bounds to global scope
+    // bounds = new google.maps.LatLngBounds(); // Export bounds to global scope
 
     // KO Experimentation REMOVE_COMMENT
     vm = new LocationsVM();
     ko.applyBindings(vm);
+
+    mv = new MapView(vm);
+    mv.initMap();
+    vm.loadData(function(data){
+        mv.initMarkers(data);
+    });
 }
 
 // Assorted functions for manipulating google maps markers
 var markerUtils = {
-
-    // Adds marker to map if it is not already there
-    addToMap: function(marker) {
-        if (marker.map == null) { // Matches null or undefined
-            marker.setMap(map);
-            bounds.extend(marker.position); // Change map bounds
-            map.fitBounds(bounds);
-        }
-    },
-
     // Makes marker bounce for 3.5 seconds. Expects the parameter "this" to be the marker
     bounce: function() {
         var self = this;
