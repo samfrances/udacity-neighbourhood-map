@@ -70,6 +70,7 @@ var LocationsVM = (function() {
 
 })();
 
+
 var MapView = (function() {
 
     function MapView(viewmodel) {

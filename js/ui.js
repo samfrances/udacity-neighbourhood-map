@@ -12,4 +12,14 @@ $(function() {
             $(document.body).toggleClass("menu-hidden", true);
         }
     });
+
+    // Set event handler on search listing, so if a link is clicked
+    // and the screen size is mobile, the menu hides after a link is clicked
+    $('.search-listing-list').click(function(event) {
+        if ( $(event.target).is("a") ) {
+            if (window.matchMedia("(max-width: 500px)").matches) {
+                $(document.body).toggleClass("menu-hidden", true);
+            }
+        }
+    });
 });
