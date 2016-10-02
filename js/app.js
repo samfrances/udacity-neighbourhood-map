@@ -191,7 +191,15 @@ var MapView = (function() {
             this.infoWindow.marker = marker;
 
             var data = this.viewmodel.locations()[marker.id];
-            this.infoWindow.setContent('<div>' + data.title + '</div>');
+
+            var content = '<div class="infowindow">';
+            content += "<h3>" + data.title + '</h3>';
+            if (data.wiki_info) {
+                content += "<p>" + data.wiki_info + "</p>";
+            }
+            content += "</div>";
+
+            this.infoWindow.setContent(content);
             this.infoWindow.open(this.map, marker);
         }
         // End credit
