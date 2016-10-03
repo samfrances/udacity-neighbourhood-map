@@ -324,11 +324,11 @@ exports.initMap = function() {
     viewmodel.loadLocations(function(data){
         mapview.initMarkers(data);
     });
-}
+};
 
 exports.mapError = function() {
     viewmodel.ajaxError("Error loading Google maps API");
-}
+};
 
 return exports;
 
