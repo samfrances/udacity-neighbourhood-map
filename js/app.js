@@ -1,3 +1,8 @@
+var BarcaMapApp = (function() {
+// Module
+
+exports = {};
+
 /**
  * Model 'class' representing locations
  */
@@ -314,9 +319,18 @@ var viewmodel = new LocationsVM();
 ko.applyBindings(viewmodel);
 var mapview = new MapView(viewmodel);
 
-function initMap() {
+exports.initMap = function() {
     mapview.initMap();
     viewmodel.loadLocations(function(data){
         mapview.initMarkers(data);
     });
 }
+
+exports.mapError = function() {
+    viewmodel.ajaxError("Error loading Google maps API");
+}
+
+return exports;
+
+// End module
+})();

@@ -32,7 +32,8 @@
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUWMwiTJbxBbVueazrlgmVqo7KYOCoDco&v=3&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUWMwiTJbxBbVueazrlgmVqo7KYOCoDco&v=3&callback=exports.initMap"
+        onerror="exports.mapError()">
     </script>
 
   </body>
