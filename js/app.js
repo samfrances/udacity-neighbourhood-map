@@ -73,14 +73,13 @@ var LocationsVM = (function() {
     }
 
     /**
-     * Loads locatons data from server using Ajax.
-     * @param {function} cb - An optional callback to be called once data is loaded,
-     *      which gets passed that data with an id added.
+     * Loads locatons data from server using Ajax, and returns a promise resolving
+     * to the loaded array of Location objects
      */
-    LocationsVM.prototype.loadLocations = function(cb) {
+    LocationsVM.prototype._loadLocations = function() {
         var self = this;
 
-        $.getJSON("data/data.json", function(data) {
+        return $.getJSON("data/data.json").then(function(data) {
             // Populate objects in viewmodel.locations observableArray with
             // retrieved data.
             data.forEach(function(location, i) {
@@ -88,12 +87,8 @@ var LocationsVM = (function() {
                 self.locations.push( new Location(location) );
             });
 
-            // Load corresponding wikipedia data
-            self._loadLocationsInfo();
-            // callback called with data once data retrieved and processed
-            if (cb) {
-                cb(data);
-            }
+            return self.locations();
+
         }).fail(function() {
             self.ajaxError("Error fetching locations");
         });
@@ -101,8 +96,7 @@ var LocationsVM = (function() {
 
     /*
      * 'Private' method, loads an informative passage from wikipedia for
-     * each location. Called in success for ajax call which loads the basic
-     * location data in viewmodel.loadLocations.
+     * each location.
      */
     LocationsVM.prototype._loadLocationsInfo = function() {
         var self = this;
@@ -129,14 +123,15 @@ var LocationsVM = (function() {
 
         var wiki_url = wiki_endpoint + "?" + wiki_queries;
 
-        $.ajax({
+        return $.ajax({
             url: wiki_url,
             dataType: "jsonp",
-        }).done(function(data) {
+        }).then(function(data) {
             // If data retrieved, at it to our location objects
             self.locations().forEach(function(location) {
                 location.wiki.info = data.query.pages[ location.wiki.id ].extract;
             });
+
         }).fail(function() {
             // If ajax call fails, add error messages to each location object
             // and set an error on viewmodel.ajaxError.
@@ -146,6 +141,13 @@ var LocationsVM = (function() {
                 self.ajaxError(error);
             });
         });
+    };
+
+    LocationsVM.prototype.load = function() {
+        var self = this;
+        var locationsPromise = this._loadLocations();
+        locationsPromise.then(this._loadLocationsInfo.bind(this));
+        return locationsPromise;
     };
 
     /*
@@ -321,7 +323,7 @@ var mapview = new MapView(viewmodel);
 
 exports.initMap = function() {
     mapview.initMap();
-    viewmodel.loadLocations(function(data){
+    viewmodel.load().then(function(data){
         mapview.initMarkers(data);
     });
 };
