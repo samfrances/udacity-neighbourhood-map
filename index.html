@@ -16,7 +16,8 @@
         <!-- Credit: See README, Third-party code [5] -->
         <input type="text" class="searchbox"
           data-bind="value: filter,
-                     valueUpdate: 'afterkeydown'">
+                     valueUpdate: 'afterkeydown',
+                     visible: locations().length > 0">
         <!-- End credit -->
         <ul data-bind="foreach: filteredLocations" class="search-listing-list">
           <!-- Note click binding changes default this Argument to make viewmode.clickLocation work -->
