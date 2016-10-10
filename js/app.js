@@ -1,7 +1,7 @@
 var BarcaMapApp = (function() {
 // Module
 
-exports = {};
+var exports = {};
 
 /**
  * Model 'class' representing locations
